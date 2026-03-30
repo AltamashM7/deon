@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90f8b352a732a44fad7673b7990fa2d, type: 3}
+  m_Name: DEONConfig
+  m_EditorClassIdentifier: Assembly-CSharp::DEONConfig
+  worlds:
+  - {fileID: 11400000, guid: 59c9a8e14ad3a5f4091fcd4586bebd0a, type: 2}
+  - {fileID: 11400000, guid: 4db06dc8adfbfd2498dcc895b48bb0b3, type: 2}
+  goodEndingThreshold: 2
+  goodEndingScene: Ending_Good
+  badEndingScene: Ending_Bad
