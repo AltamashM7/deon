@@ -2,7 +2,6 @@
   <Project Path="YarnSpinner.Unity.csproj" />
   <Project Path="YarnSpinner.Unity.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="MToon.csproj" />
   <Project Path="MToon.Editor.csproj" />
 </Solution>
