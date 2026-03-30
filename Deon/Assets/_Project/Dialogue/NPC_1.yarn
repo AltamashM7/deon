@@ -1,0 +1,7 @@
+﻿title: NPC_Default
+---
+Narrator: This is a NPC conversation.
+Narrator: triggered when pressed Z near a NPC. 
+-> do you like it ?
+Narrator: Yes I like it. 
+===

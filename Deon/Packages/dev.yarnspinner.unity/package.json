@@ -1,0 +1,24 @@
+{
+  "name": "dev.yarnspinner.unity",
+  "version": "3.2.1",
+  "displayName": "Yarn Spinner",
+  "description": "Yarn Spinner is the friendly tool for interactive conversations. Write your dialogue in a simple programming language that's designed to be straightforward for writers and powerful for programmers, and then attach it to your scenes to power your conversations.",
+  "unity": "2022.3",
+  "changelogUrl": "https://docs.yarnspinner.dev/changelog",
+  "documentationUrl": "https://docs.yarnspinner.dev/",
+  "licensesUrl": "https://docs.yarnspinner.dev/branding",
+  "keywords": [
+    "Dialogue",
+    "Yarn"
+  ],
+  "author": {
+    "name": "Yarn Spinner Pty Ltd",
+    "url": "https://yarnspinner.dev"
+  },
+  "hideInEditor": false,
+  "type": "module",
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
+  },
+  "_fingerprint": "b3b43c106521a3034caaaf436eb200b865a6efb1"
+}
