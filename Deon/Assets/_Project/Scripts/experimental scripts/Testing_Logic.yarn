@@ -1,0 +1,17 @@
+﻿title: NPC_Test_Node
+---
+<<set_left Ren>>
+<<enter_left>>
+Ren: Let's test if Farhan's logic is actually recording this.
+Ren: Should I make the good choice, or the bad choice?
+
+-> Make the Good Choice
+    <<record_choice "world_hospital" 1>>
+    Ren: I made the right call. The score should be 1.
+-> Make the Bad Choice
+    <<record_choice "world_hospital" 0>>
+    Ren: I messed up. The score should be 0.
+
+Ren: Let's check the Unity Console!
+<<exit_left>>
+===

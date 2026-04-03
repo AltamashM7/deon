@@ -12,4 +12,13 @@ public class WorldDefinition : ScriptableObject
     public int goodChoiceScore = 1;
     [Tooltip("Score awarded for the morally wrong choice")]
     public int badChoiceScore = 0;
+
+    // --- ADDED FOR HUB UI ---
+    [Header("Terminal UI")]
+    [TextArea(3, 6)]
+    public string worldDescription;
+    public Sprite worldPreviewImage;
+    
+    [Tooltip("The exact name of the Scene file to load (Case Sensitive!)")]
+    public string sceneToLoad; 
 }
