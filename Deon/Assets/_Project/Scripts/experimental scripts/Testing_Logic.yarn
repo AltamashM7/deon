@@ -2,7 +2,7 @@
 ---
 <<set_left Ren>>
 <<enter_left>>
-Ren: Let's test if Farhan's logic is actually recording this.
+Ren: Let's test if the backend is working.
 Ren: Should I make the good choice, or the bad choice?
 
 -> Make the Good Choice
