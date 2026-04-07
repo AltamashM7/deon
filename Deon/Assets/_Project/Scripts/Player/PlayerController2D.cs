@@ -20,6 +20,8 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.1f;
     [SerializeField] private LayerMask groundLayer;
 
+    [SerializeField] private Animator animator; 
+
     [Header("Ladder")]
     [SerializeField] private float climbSpeed = 3f;
 
@@ -63,8 +65,29 @@ public class PlayerController2D : MonoBehaviour
         _rb.linearVelocity = new Vector2(h * moveSpeed, _rb.linearVelocity.y);
 
         // Flip sprite to face direction of movement
-        if (h != 0)
-            transform.localScale = new Vector3(Mathf.Sign(h), 1f, 1f);
+        
+        // if (h != 0)
+        //     transform.localScale = new Vector3(Mathf.Sign(h), 1f, 1f);
+
+        if(h!=0)
+        {
+            if (h > 0)
+            {
+                animator.SetBool("IsWalkingRight", true);
+                animator.SetBool("IsWalkingLeft", false);
+            }
+            else
+            {
+                animator.SetBool("IsWalkingRight", false);
+                animator.SetBool("IsWalkingLeft", true);
+            } 
+        }
+        else
+        {
+            animator.SetBool("IsWalkingRight", false);
+            animator.SetBool("IsWalkingLeft", false);
+        }
+
     }
 
     private void HandleJump()

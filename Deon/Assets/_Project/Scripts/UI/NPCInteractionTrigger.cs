@@ -41,7 +41,7 @@ public class NPCInteractionTrigger : MonoBehaviour
         if (!_playerInRange) return;
 
         // Interaction keys: Z or A (as specified in Jira Task 2.2)
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             StartDialogue();
         }
