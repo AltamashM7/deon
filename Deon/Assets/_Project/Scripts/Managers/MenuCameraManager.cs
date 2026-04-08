@@ -1,7 +1,9 @@
+using System.Collections; // NEW: Required for Coroutines
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Unity.Cinemachine; // The new Cinemachine 3.0 namespace
+using UnityEngine.Video; 
+using Unity.Cinemachine;
 
 public class MenuCameraManager : MonoBehaviour
 {
@@ -23,7 +25,11 @@ public class MenuCameraManager : MonoBehaviour
     public Button btn_No;
 
     [Header("Settings")]
-    public string hubSceneName = "HubOverhaul"; // Change this to your actual scene name
+    public string hubSceneName = "HubOverhaul"; 
+
+    [Header("Cutscene Settings")] 
+    [Tooltip("Drag your Intro_Cutscene VideoPlayer object here")]
+    public VideoPlayer introCutscenePlayer;
 
     private void Start()
     {
@@ -31,7 +37,10 @@ public class MenuCameraManager : MonoBehaviour
         btn_Begin.onClick.AddListener(() => SetMenuState(2));
         btn_StartGame.onClick.AddListener(() => SetMenuState(3));
         btn_ExitGame.onClick.AddListener(ExitApplication);
-        btn_Yes.onClick.AddListener(StartHubLevel);
+        
+        // MODIFIED: btn_Yes now triggers the Fade Coroutine
+        btn_Yes.onClick.AddListener(PlayIntroCutscene); 
+        
         btn_No.onClick.AddListener(() => SetMenuState(2)); // "No" sends them back to Ren
 
         // 2. Initialize the starting state (Wide Shot)
@@ -69,6 +78,81 @@ public class MenuCameraManager : MonoBehaviour
                 panel_03_AkaneConfirm.SetActive(true);
                 break;
         }
+    }
+
+    // --- NEW: Fade and Cutscene Logic ---
+    private void PlayIntroCutscene()
+    {
+        // Disable the button instantly so the player can't double-click it during the fade
+        btn_Yes.interactable = false;
+        
+        // Start the fading sequence
+        StartCoroutine(FadeAndPlaySequence());
+    }
+
+    private IEnumerator FadeAndPlaySequence()
+    {
+        // 1. Generate a black overlay purely via code
+        GameObject fadeObj = new GameObject("FadeOverlay");
+        Canvas canvas = fadeObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 999; // Ensure it renders on top of EVERYTHING
+
+        Image fadeImage = fadeObj.AddComponent<Image>();
+        fadeImage.color = new Color(0f, 0f, 0f, 0f); // Start completely transparent
+
+        // 2. Smoothly fade it in over 1.5 seconds
+        float fadeDuration = 1.5f;
+        float timer = 0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            fadeImage.color = new Color(0f, 0f, 0f, timer / fadeDuration);
+            yield return null;
+        }
+
+        // Lock it to solid black
+        fadeImage.color = Color.black;
+
+        // Give the player half a second to sit in the darkness
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. Start the cinematic!
+        if (introCutscenePlayer != null)
+        {
+            // Kill the Main Menu music so it doesn't overlap the cinematic
+            if (MusicManager.Instance != null) 
+            {
+                MusicManager.Instance.StopMusic();
+            }
+
+            // Hide Akane's confirmation UI so the video is clearly visible
+            panel_03_AkaneConfirm.SetActive(false);
+
+            // Destroy the black fade canvas so it doesn't block our view of the video!
+            Destroy(fadeObj);
+
+            // Turn on the video player and listen for when it finishes
+            introCutscenePlayer.gameObject.SetActive(true);
+            introCutscenePlayer.loopPointReached += OnIntroFinished;
+            
+            introCutscenePlayer.Play();
+        }
+        else
+        {
+            // Failsafe: If no video is assigned, just load the hub instantly
+            StartHubLevel();
+        }
+    }
+
+    private void OnIntroFinished(VideoPlayer vp)
+    {
+        // Stop listening to prevent memory leaks
+        vp.loopPointReached -= OnIntroFinished;
+        
+        // The cinematic is over, teleport to the Hub!
+        StartHubLevel();
     }
 
     private void StartHubLevel()

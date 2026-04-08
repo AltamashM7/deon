@@ -101,6 +101,9 @@ public class TerminalUIManager : MonoBehaviour
         // Play the cutscene if we have one attached
         if (warpCutscenePlayer != null)
         {
+            // --- NEW: KILL THE HUB MUSIC SO IT DOESN'T OVERLAP THE TRANSITION ---
+            if (MusicManager.Instance != null) MusicManager.Instance.StopMusic();
+
             warpCutscenePlayer.gameObject.SetActive(true);
             warpCutscenePlayer.enabled = true;
             warpCutscenePlayer.loopPointReached += OnWarpCutsceneFinished;

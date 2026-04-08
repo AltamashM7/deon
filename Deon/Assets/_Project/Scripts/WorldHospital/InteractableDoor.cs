@@ -34,6 +34,9 @@ public class InteractableDoor : MonoBehaviour
         // 2. Play the video if one is assigned
         if (cutscenePlayer != null)
         {
+            // --- NEW: PAUSE THE MUSIC! ---
+            if (MusicManager.Instance != null) MusicManager.Instance.PauseMusic();
+
             cutscenePlayer.gameObject.SetActive(true); // Turn the video object on
             
             // Tell the script to listen for the exact moment the video finishes
@@ -76,6 +79,9 @@ public class InteractableDoor : MonoBehaviour
         if (pm != null) pm.enabled = true;
 
         SpatialPointer3D.CanUsePointer = true;
+
+        // --- NEW: RESUME THE MUSIC! ---
+        if (MusicManager.Instance != null) MusicManager.Instance.ResumeMusic();
 
         // Note: The StartDialogue command was removed! The player must now 
         // walk up to the Surgery Doctor and press E to start the climax.

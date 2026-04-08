@@ -14,6 +14,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Worlds/Hospital_World.unity
     guid: 89ba8d4914c96ad4b8cab209206d69cf
+  - enabled: 1
+    path: Assets/_Project/Scenes/Worlds/World2_Utopia.unity
+    guid: c86e30b2e0498074884e6eb7df023ef7
+  - enabled: 1
+    path: Assets/_Project/Scenes/End/Ending_Good.unity
+    guid: 1c41a09d3a4b6564fb9f19c0dda2bff7
+  - enabled: 1
+    path: Assets/_Project/Scenes/End/Ending_Bad.unity
+    guid: a7f79ee47421052418807c76688e0515
+  - enabled: 1
+    path: Assets/_Project/Scenes/End/Credits.unity
+    guid: 75aa6ae2eac90674db025a76a3d0e36f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
