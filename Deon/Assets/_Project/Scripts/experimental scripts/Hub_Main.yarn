@@ -1,0 +1,124 @@
+﻿title: Hub_Intro
+---
+<<declare $seen_hub_intro = false>>
+<<declare $seen_hospital_reaction = false>>
+
+<<set $seen_hub_intro = true>>
+
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+Akane: How does it feel? Do you remember anything?
+
+<<highlight both>>
+
+-> ...
+    <<highlight right>>
+    Akane: ...
+-> Uhh.. who are you.. Where am I?
+    <<highlight right>>
+    Akane: Who I am does not matter, the only thing that matters is that you are trapped here, and you better maintain your sanity if you wish to escape.
+
+<<highlight left>>
+Ren: What is going on..?
+
+<<highlight right>>
+Akane: 2 lives. You will be sent at certain places..
+Akane: And depending on how well you perform.. I might just send you back.
+
+<<highlight left>>
+Ren: (Is this a dream? but this feels too real, then perhaps it would be wise to play along, since clearly this is no ordinary child.)
+Ren: Fine then, let's get on with it, what am I supposed to do?
+
+<<highlight right>>
+Akane: Ah it's simple, you just have to go through the experiences of some specific people.
+
+<<highlight left>>
+Ren: W-What..?
+
+<<highlight right>>
+Akane: The devices that you see besides us in this room will allow you to do that. I must say, pretty impressive stuff.
+
+<<highlight left>>
+Ren: Huh? But these are just computers? And pretty old ones at that.
+
+<<highlight right>>
+Akane: Hm.. You'll see soon enough.
+Akane: You may try to escape this place as well, that would be fun.
+
+<<exit_right>>
+
+<<highlight left>>
+Ren: (As if someone capable of trapping me here will not notice me escaping..)
+Ren: (Although I suppose it's worth a try.)
+
+<<exit_left>>
+===
+
+title: Hub_Child_Main
+---
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+// A simple check so the child's idle dialogue updates after the hospital
+<<if get_world_score("world_hospital") != 0>>
+    Akane: The first world has been cleared, but you are not done yet.
+<<else>>
+    Akane: Do you really have the time to idle around?
+    Akane: Don't you want to go home?
+<<endif>>
+
+<<exit_left>>
+<<exit_right>>
+===
+
+title: Hub_Child_World1_Reaction
+---
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>> 
+<<enter_right>>
+
+<<if get_world_score("world_hospital") == 1>>
+    
+    <<highlight right>>
+    Akane: I'm impressed, did you do that because you thought it will not be you who will be dealing with the consequences?
+    Akane: Or did you do it because you genuinely thought that it was the right thing to do? I wonder..
+    
+    -> Of course because it was the right thing to do.
+        <<highlight left>>
+        Ren: Of course because it was the right thing to do, the one who was the next in line deserves to be operated on. Human lives should not be discriminated against like this!
+        
+        <<highlight right>>
+        Akane: Hmm.. interesting.
+        
+    -> I wonder too..
+        <<highlight left>>
+        Ren: I wonder too.. If it was somebody close to me instead of the Senator, I doubt I would have chosen the same decision.
+        
+        <<highlight right>>
+        Akane: Hmm.. interesting.
+
+<<else>>
+
+    <<highlight right>>
+    Akane: Hmm.. a pity.
+    
+    -> It is only natural to choose the Senator.
+        <<highlight left>>
+        Ren: It is only natural to choose the Senator, if the funding stops, the hospital will suffer losses.
+        
+        <<highlight right>>
+        Akane: Hmm.. interesting.
+
+<<endif>>
+
+<<exit_left>>
+<<exit_right>>
+===

@@ -85,7 +85,7 @@ public class ChoiceEngine : MonoBehaviour
     /// </summary>
     public int GetWorldScore(string worldId)
     {
-        return _worldScores.TryGetValue(worldId, out int score) ? score : -1;
+        return _worldScores.TryGetValue(worldId, out int score) ? score : 0;
     }
 
     /// <summary>

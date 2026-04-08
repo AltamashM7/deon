@@ -1,0 +1,122 @@
+﻿title: DoctorWorld_Junior
+---
+<<set_left RenU>>
+<<set_right DoctorN>>
+<<enter_left>>
+Johan (Ren): So this is what I look like now huh?..
+<<set_left RenN>>
+
+<<enter_right>>
+
+<<highlight right>>
+<<set_right DoctorU>>
+Doctor: Ah, Doctor Johan! These days have been quite hard haven't they..? 
+<<set_right DoctorN>>
+Doctor: The number of patients just won't drop, what in the world is happening out there.
+
+-> Ah.. that seems to be the case.
+    <<highlight left>>
+    Johan (Ren): Ah.. that seems to be the case.
+    
+    <<highlight right>>
+    Doctor: Hm.. We gotta do what we gotta do.
+    
+-> What exactly is happening out there?
+    <<highlight left>>
+    Johan (Ren): What exactly is happening out there?
+    
+    <<highlight right>>
+    Doctor: Huh? Don't tell me you have started forgetting stuff, you should really take a rest. 
+    Doctor: The protestors turned violent when their leader was shot.
+    
+    <<highlight left>>
+    Johan (Ren): Ah right.
+
+<<highlight right>>
+Doctor: The Senator is out there dealing with the protestors, It seems he's planning on funding our hospital, that will help the hospital in a tremendous manner! 
+Doctor: Anyways we should get ready.
+
+<<exit_left>>
+<<exit_right>>
+<<complete_objective junior>>
+===
+
+title: DoctorWorld_Patient
+---
+<<set_left RenN>>
+<<set_right OldN>>
+
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+Patient: It's good to see you again doctor, if only you knew how indebted I am to you.
+
+-> It's good to see you again too, how are you feeling?
+    <<highlight left>>
+    Johan (Ren): It's good to see you again too, how are you feeling?
+    
+    <<highlight right>>
+    <<set_right OldU>>
+    Patient: Fine now, thanks to you, although the pain occasionally appears..
+    <<set_right OldN>>
+    
+-> No no.. I am simply doing what is necessary.
+    <<highlight left>>
+    Johan (Ren): No no.. I am simply doing what is necessary.
+    
+    <<highlight right>>
+    <<set_right OldU>>
+    Patient: Ever the humble doctor Johan haha..
+    <<set_right OldN>>
+
+<<highlight left>>
+Johan (Ren): Don't move around too much, and take care.
+
+<<highlight right>>
+Patient: Yes sir.
+
+<<exit_left>>
+<<exit_right>>
+<<complete_objective patient>>
+===
+
+title: World1_FinalDecision
+---
+<<set_left RenN>>
+<<set_right DoctorN>>
+
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+Doctor: Hurry Doctor, we have to perform a surgery on him quickly!
+
+<<highlight left>>
+<<set_left RenU>>
+Johan (Ren): Ye- Yes right away!
+<<set_left RenN>>
+
+<<highlight right>>
+Doctor (Background): Huh? How did you enter in here?!
+Doctor (Background): We are about to perform a surgery!
+Doctor (Background): What? The senator needs surgery as well?
+Doctor: Hmm.. In that case, Quick Johan, we have to save the Senator.
+
+<<highlight left>>
+Johan (Ren): Huh? But what about the child?
+
+<<highlight right>>
+Doctor: Dont you understand? If the Senator dies, so do our funds! We MUST save him.
+
+-> Save the injured child
+    <<record_choice "world_hospital" 1>>
+    Narrator: You step towards the child...
+-> Save the Senator
+    <<record_choice "world_hospital" -1>>
+    Narrator: You step towards the Senator...
+
+<<exit_left>>
+<<exit_right>>
+<<extract_to_hub>>
+===

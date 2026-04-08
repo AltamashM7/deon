@@ -23,7 +23,7 @@ public class MenuCameraManager : MonoBehaviour
     public Button btn_No;
 
     [Header("Settings")]
-    public string hubSceneName = "Hub_WhiteRoom"; // Change this to your actual scene name
+    public string hubSceneName = "HubOverhaul"; // Change this to your actual scene name
 
     private void Start()
     {

@@ -1,26 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // <-- We need this namespace to talk to TextMeshPro!
+using TMPro; 
 using UnityEngine.SceneManagement;
+using UnityEngine.Video; // Added for cutscene support
 
 public class TerminalUIManager : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private GameObject terminalContainer;
-    
-    // Changed these from 'Text' to 'TextMeshProUGUI'
     [SerializeField] private TextMeshProUGUI titleText; 
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI statusText;
-    
     [SerializeField] private Image previewImage;
     
     [Header("Buttons")]
     [SerializeField] private Button warpButton;
     [SerializeField] private Button exitButton;
 
+    [Header("Cutscene Settings")]
+    [Tooltip("Drag the Hub_Cutscene VideoPlayer object here")]
+    [SerializeField] private VideoPlayer warpCutscenePlayer;
+
     [Header("Player Controls")]
-    [Tooltip("Drag the Player scripts (Movement, Camera Look) here to disable them when the terminal is open")]
     [SerializeField] private MonoBehaviour[] scriptsToDisable;
 
     private string pendingScene;
@@ -34,8 +35,8 @@ public class TerminalUIManager : MonoBehaviour
 
     public void OpenTerminal(WorldDefinition worldData)
     {
-        // 1. Fill the UI with the data
-        titleText.text = "SIMULATION: " + worldData.displayName.ToUpper();
+        // 1. Fill the UI
+        titleText.text = "World: " + worldData.displayName.ToUpper();
         descriptionText.text = worldData.worldDescription;
         pendingScene = worldData.sceneToLoad;
         
@@ -49,18 +50,22 @@ public class TerminalUIManager : MonoBehaviour
             previewImage.enabled = false;
         }
 
-        // 2. QoL Status Check using Farhan's engine
+        // 2. Status Check & Lockout
         if (ChoiceEngine.Instance != null)
         {
             int score = ChoiceEngine.Instance.GetWorldScore(worldData.worldId);
-            statusText.text = (score != -1) ? "STATUS: COMPLETED" : "STATUS: PENDING SIMULATION";
+            bool isCompleted = (score != 0);
+            
+            statusText.text = isCompleted ? "STATUS: COMPLETED" : "STATUS: PENDING";
+            
+            // If the world is completed, make the button unclickable!
+            warpButton.interactable = !isCompleted; 
         }
 
         // 3. Freeze game and unlock cursor
         SpatialPointer3D.CanUsePointer = false; 
         Time.timeScale = 0f; 
 
-        // Disable player movement and camera look scripts to prevent gliding
         foreach (var script in scriptsToDisable)
         {
             if (script != null) script.enabled = false;
@@ -68,7 +73,6 @@ public class TerminalUIManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
         terminalContainer.SetActive(true);
     }
 
@@ -77,7 +81,6 @@ public class TerminalUIManager : MonoBehaviour
         terminalContainer.SetActive(false);
         Time.timeScale = 1f;
 
-        // Re-enable player movement and camera look scripts
         foreach (var script in scriptsToDisable)
         {
             if (script != null) script.enabled = true;
@@ -90,14 +93,48 @@ public class TerminalUIManager : MonoBehaviour
 
     private void WarpToWorld()
     {
-        if (!string.IsNullOrEmpty(pendingScene))
+        if (string.IsNullOrEmpty(pendingScene)) return;
+
+        // Hide the terminal UI so the video can play cleanly
+        terminalContainer.SetActive(false);
+
+        // Play the cutscene if we have one attached
+        if (warpCutscenePlayer != null)
         {
-            Time.timeScale = 1f; // Must unpause before loading!
-            SceneManager.LoadScene(pendingScene);
+            warpCutscenePlayer.gameObject.SetActive(true);
+            warpCutscenePlayer.enabled = true;
+            warpCutscenePlayer.loopPointReached += OnWarpCutsceneFinished;
+            
+            // Note: We use unscaledTime here in case Time.timeScale is still 0
+            warpCutscenePlayer.Play(); 
         }
         else
         {
-            Debug.LogWarning("Warp failed: No scene name assigned!");
+            ExecuteWarp();
         }
+    }
+
+    private void OnWarpCutsceneFinished(VideoPlayer vp)
+    {
+        vp.loopPointReached -= OnWarpCutsceneFinished;
+        vp.enabled = false;
+        vp.gameObject.SetActive(false);
+        ExecuteWarp();
+    }
+
+    private void ExecuteWarp()
+    {
+        // 1. Unpause time
+        Time.timeScale = 1f; 
+
+        // 2. RE-ENABLE THE POINTER (This is what broke your UI!)
+        SpatialPointer3D.CanUsePointer = true; 
+
+        // 3. Re-lock the mouse cursor so you can look around in the new world
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // 4. Finally, load the level
+        SceneManager.LoadScene(pendingScene);
     }
 }
