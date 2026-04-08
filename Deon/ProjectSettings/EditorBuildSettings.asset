@@ -6,14 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/Core/Hub.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/_Project/Scenes/Core/Main_Menu.unity
+    guid: ba9cf17de4301954b88dde22151fc519
   - enabled: 1
     path: Assets/_Project/Scenes/Core/HubOverhaul.unity
     guid: 74c0321a10ab9f141a8037cb50bfd8a4
   - enabled: 1
-    path: Assets/_Project/Scenes/Core/Main_Menu.unity
-    guid: ba9cf17de4301954b88dde22151fc519
+    path: Assets/_Project/Scenes/Worlds/Hospital_World.unity
+    guid: 89ba8d4914c96ad4b8cab209206d69cf
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

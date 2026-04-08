@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro; 
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -12,39 +13,59 @@ public class PlayerInteractor : MonoBehaviour
     [Tooltip("The button used to interact")]
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
-    [Header("UI Settings")]
-    [Tooltip("Drag the CanvasGroup of your Interact_Prompt UI here")]
+    [Header("UI - Interact Prompt")]
+    [Tooltip("Drag the CanvasGroup containing your E button and - Interact text here")]
     [SerializeField] private CanvasGroup interactPromptGroup;
+
+    [Header("UI - System Hints")]
+    [Tooltip("Drag the NEW CanvasGroup you created for system messages here")]
+    [SerializeField] private CanvasGroup systemHintGroup;
     
-    [Tooltip("How fast the prompt fades in and out")]
+    [Tooltip("Drag the TextMeshPro object inside the System Hint Group here")]
+    [SerializeField] private TMP_Text systemHintText;
+
+    [Header("Global UI Settings")]
     [SerializeField] private float fadeSpeed = 10f;
 
     private bool _isLookingAtInteractable = false;
     private InteractableMonitor _currentMonitor = null;
+    private float _systemHintTimer = 0f;
 
     private void Update()
     {
-        // Safety check: Don't allow interacting or showing UI if the game is paused (Time.timeScale == 0)
-        // or if a menu/dialogue is currently running.
+        // Safety check: Don't allow interacting or showing UI if the game is paused 
         if (Time.timeScale == 0f || !SpatialPointer3D.CanUsePointer)
         {
-            FadePrompt(false);
+            // FORCE the alpha to 0 instantly so it doesn't get "stuck" when time stops
+            if (interactPromptGroup != null) interactPromptGroup.alpha = 0f;
+            if (systemHintGroup != null) systemHintGroup.alpha = 0f;
             return;
         }
 
         // 1. Shoot the thick beam to find targets
         CheckForInteractable();
         
-        // 2. Smoothly fade the UI
-        FadePrompt(_isLookingAtInteractable);
+        // 2. Handle System Hint Timer & UI Fading (Independent of looking at things)
+        if (_systemHintTimer > 0f)
+        {
+            _systemHintTimer -= Time.deltaTime;
+            FadeGroup(systemHintGroup, true); 
+        }
+        else
+        {
+            FadeGroup(systemHintGroup, false);
+        }
 
-        // 3. Handle the actual key press
+        // 3. Handle standard Interact Prompt (Independent of system hints)
+        FadeGroup(interactPromptGroup, _isLookingAtInteractable);
+
+        // 4. Handle the actual key press for Monitors
         if (_isLookingAtInteractable && _currentMonitor != null)
         {
             if (Input.GetKeyDown(interactKey))
             {
                 _currentMonitor.TriggerMonitor();
-                _isLookingAtInteractable = false; // Hide prompt instantly so it doesn't overlap the terminal UI
+                _isLookingAtInteractable = false; 
             }
         }
     }
@@ -52,11 +73,8 @@ public class PlayerInteractor : MonoBehaviour
     private void CheckForInteractable()
     {
         Ray ray = new Ray(transform.position, transform.forward);
-        
-        // Shoot a thick cylinder that passes through objects, grabbing everything in its path
         RaycastHit[] hits = Physics.SphereCastAll(ray, detectionRadius, interactRange);
 
-        // Default to false. It only turns true if the monitor is inside the beam.
         _isLookingAtInteractable = false; 
         _currentMonitor = null;
 
@@ -76,24 +94,51 @@ public class PlayerInteractor : MonoBehaviour
             if (npc != null)
             {
                 _isLookingAtInteractable = true;
-                
-                // If they press E while looking at her, trigger the dialogue!
                 if (Input.GetKeyDown(interactKey))
                 {
                     npc.TriggerDialogue();
-                    _isLookingAtInteractable = false; // Hide prompt instantly
+                    _isLookingAtInteractable = false; 
+                }
+                return;
+            }
+
+            // Check for the Interactable Door
+            InteractableDoor door = hit.collider.GetComponent<InteractableDoor>();
+            if (door != null)
+            {
+                _isLookingAtInteractable = true;
+                if (Input.GetKeyDown(interactKey))
+                {
+                    door.TeleportPlayer(transform.root.gameObject);
+                    _isLookingAtInteractable = false; 
                 }
                 return;
             }
         }
     }
 
-    private void FadePrompt(bool show)
+    // Helper method to safely fade any canvas group
+    private void FadeGroup(CanvasGroup group, bool show)
     {
-        if (interactPromptGroup == null) return;
+        if (group == null) return;
 
-        // Smoothly fade between 0 (invisible) and 1 (visible)
         float targetAlpha = show ? 1f : 0f;
-        interactPromptGroup.alpha = Mathf.Lerp(interactPromptGroup.alpha, targetAlpha, Time.deltaTime * fadeSpeed);
+        group.alpha = Mathf.Lerp(group.alpha, targetAlpha, Time.deltaTime * fadeSpeed);
+    }
+
+    // --- METHOD FOR SYSTEM HINTS ---
+    public void ShowSystemHint(string message, float duration = 4f)
+    {
+        if (systemHintText != null)
+        {
+            systemHintText.text = message;
+        }
+        
+        _systemHintTimer = duration; 
+        
+        if (systemHintGroup != null)
+        {
+            systemHintGroup.alpha = 1f;
+        }
     }
 }

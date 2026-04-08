@@ -15,7 +15,7 @@ MonoBehaviour:
   worldId: world_hospital
   displayName: World 1 - Hospital
   goodChoiceScore: 1
-  badChoiceScore: 0
+  badChoiceScore: -1
   worldDescription: Damn this hospital kinda crazy
   worldPreviewImage: {fileID: 21300000, guid: aa52415c25355bc469e3efaf4408a416, type: 3}
-  sceneToLoad: World1_Hospital
+  sceneToLoad: Hospital_World
