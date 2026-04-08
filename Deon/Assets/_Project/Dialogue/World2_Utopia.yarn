@@ -1,0 +1,251 @@
+﻿
+title: World2_Intro
+position: -701,-715
+---
+// This node fires automatically when the player first enters the world.
+// Wire this to the NPCInteractionTrigger on a hidden trigger zone at the player spawn point.
+// Or call it from a scene initializer script.
+
+<<set_left mc_surprised>>
+<<enter_left>>
+<<highlight left>>
+
+MC: No way this actually worked.. But why does everything feel so flat?!
+
+<<set_right Akane>>
+<<enter_right>>
+<<highlight right>>
+
+Child: You said it so yourself — these are after all... *pretty old terminals*. They can only handle so much.
+
+<<highlight left>>
+MC: Uhh.. I see.
+
+<<highlight right>>
+Child: You are a new resident of this utopia. You were invited here by your friend. Explore this place. Speak to those you meet. And then I'll decide what kind of person you are.
+
+<<exit_right>>
+<<exit_left>>
+===
+
+
+title: World2_Stranger
+position: 497,-501
+---
+// Attach this node to NPC_Stranger's NPCInteractionTrigger → Yarn Start Node field
+
+<<set_left mc_neutral>>
+<<set_right stranger_smiling>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+Stranger: Ah, a new face. Welcome to the only utopia in this world!
+
+<<highlight left>>
+-> Um, can you tell me a bit more about this place?
+    <<jump World2_Stranger_Explain>>
+-> This place is a utopia?
+    <<jump World2_Stranger_Explain>>
+===
+
+title: World2_Stranger_Explain
+position: 600,-178
+---
+<<highlight right>>
+Stranger: Yes indeed. It is known that a utopia is not possible because of several factors — then how is it that this land knows no suffering, no conflict, only bliss?
+
+Stranger: The answer lies at the boundary of this land. There is a child kept in darkness, constantly suffering. His suffering sustains this utopia. As long as that child suffers, this place endures.
+
+<<set_left mc_surprised>>
+<<highlight left>>
+-> Wh— what..? And you are fine with it?
+    <<set $stranger_response to 1>>
+    <<jump World2_Stranger_Response>>
+-> Do people know this?
+    <<set $stranger_response to 2>>
+    <<jump World2_Stranger_Response>>
+===
+
+title: World2_Stranger_Response
+position: 840,79
+---
+<<if $stranger_response == 1>>
+    <<highlight right>>
+    Stranger: Yes I am. If it means my friends and family live their perfect life, I can sit comfortably sacrificing a single life.
+    <<set_left mc_neutral>>
+    <<highlight left>>
+    MC: That is... understandable.
+<<else>>
+    <<highlight right>>
+    Stranger: Every resident is aware of this fact. None of them object. After all, who would give up a perfect life?
+    <<set_left mc_angry>>
+    <<highlight left>>
+    MC: This is insane. That child is innocent.
+    <<highlight right>>
+    Stranger: He is. Although it does not matter. Humans are naturally inclined toward self-interest. Spend more time here and you will understand.
+<<endif>>
+
+<<set_left mc_neutral>>
+<<highlight right>>
+Stranger: All it takes to break this utopia is to free the child. Think carefully before you act. People's lives are at stake.
+
+<<exit_right>>
+<<exit_left>>
+===
+
+
+
+title: World2_Friend
+position: -114,-497
+---
+// Attach this to NPC_Friend's NPCInteractionTrigger
+
+<<set_left mc_neutral>>
+<<set_right friend_smiling>>
+<<enter_left>>
+<<enter_right>>
+<<highlight left>>
+
+MC: (inner thought) He must be the one who invited me here... I can't seem to recognize him a bit !!
+
+<<highlight right>>
+Friend: Hey! Long time no see — how do you like this place?
+
+<<set_left mc_smiling>>
+<<highlight left>>
+-> What kind of place did you invite me to?
+    <<set $friend_route to 1>>
+    <<jump World2_Friend_Explain>>
+-> This place operates on an interesting mechanism...
+    <<set $friend_route to 2>>
+    <<jump World2_Friend_Explain>>
+===
+
+title: World2_Friend_Explain
+position: 74,-243
+---
+<<set_right friend_surprised>>
+<<highlight right>>
+<<if $friend_route == 1>>
+    Friend: Ah... So you know. I was going to tell you eventually.
+<<else>>
+    Friend: Ah... So you know. Your reactions are better than I expected.
+<<endif>>
+<<set_right friend_neutral>>
+
+Friend: There is too much to lose. Hundreds of people live here. Their happiness depends on that child. And so it is important that we look away — for the sake of the many.
+
+<<highlight left>>
+-> Yes, that does make sense.
+    <<set_left mc_smiling>>
+    <<set $friend_agreed to true>>
+    <<jump World2_Friend_Close>>
+-> I am still not so sure about that.
+    <<set_left mc_neutral>>
+    <<set $friend_agreed to false>>
+    <<jump World2_Friend_Close>>
+-> No way.
+    <<set_left mc_neutral>>
+    <<set $friend_agreed to false>>
+    <<jump World2_Friend_Pushback>>
+===
+
+title: World2_Friend_Pushback
+position: -105,5
+---
+<<highlight right>>
+Friend: Don't do something foolish you will regret. This is not what I invited you here for.
+Friend: I have invited you here, so you can have a look at difference in people's perspectives.
+
+<<jump World2_Friend_Close>>
+===
+
+title: World2_Friend_Close
+position: 52,274
+---
+<<if $friend_agreed>>
+    <<highlight right>>
+    Friend: Exactly! Now relax and enjoy this place.
+<<else>>
+    <<highlight right>>
+    Friend: Just... think about it. Before you act.
+<<endif>>
+
+<<exit_right>>
+<<exit_left>>
+===
+
+
+
+
+
+title: World2_FinalChoice
+position: -475,-174
+---
+// Attach this to the Interactive_Choice trigger (a separate NPC or zone trigger at the lever/boundary)
+// This is the player's final moral decision node
+
+<<set_left mc_neutral>>
+<<enter_left>>
+<<highlight left>>
+
+MC: (inner thought) I know what is at the boundary of this place. I know what is keeping all of this going.
+
+MC: Now I have to decide. Do I walk away... or do I do something about it?
+
+-> I should turn a blind eye, because the lives of hundreds matter more.
+    <<record_choice "world_utopia" 0>>
+    <<jump World2_Choice_Ignore>>
+-> I should Go Free the child.
+    <<set_left mc_angry>>
+    <<record_choice "world_utopia" 1>>
+    <<jump World2_Choice_Free>>
+===
+
+title: World2_Choice_Ignore
+position: -690,141
+---
+<<set_left mc_neutral>>
+
+MC: ...I'm sorry, But this isn't my burden to carry.
+
+<<exit_left>>
+// Trigger scene transition back to Hub here via InteractiveExit or SceneLoader command
+<<load_hub>>
+<<extract_to_hub>>
+===
+
+title: World2_Choice_Free
+position: -416,325
+---
+MC: I can't live with this. knowing what I know.
+
+<<exit_left>>
+// Teleport player to Boundary_Zone — handle this via a script or a second trigger zone
+// The player walks to the child's location and a proximity trigger ends the world
+<<load_hub>>
+<<extract_to_hub>>
+===
+
+
+
+title: World2_HubReturn_ChildReaction
+position: -708,-543
+---
+// This node plays in the HUB scene after World 2 is completed.
+// Wire this to the Child NPC's dialogue, gated by: get_world_score("world_utopia") != -1
+
+<<set_left Akane>>
+<<enter_left>>
+<<highlight left>>
+
+<<if get_world_score("world_utopia") == 0>>
+    Child: The answer was simple, actually. Peace is a core concept of a utopia. And justice is a prerequisite for peace. How can it be a utopia when that child is treated in that manner?
+<<else>>
+    Child: So you chose to give up the perfect lives of the many to ensure that the child is not unfairly treated. 
+    Child: Interesting !
+<<endif>>
+
+<<exit_left>>
+===
