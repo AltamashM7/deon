@@ -219,7 +219,7 @@ MC: ...I'm sorry, But this isn't my burden to carry.
 title: World2_Choice_Free
 position: -416,325
 ---
-MC: I can't live with this. Not knowing what I know.
+MC: I can't live with this. knowing what I know.
 
 <<exit_left>>
 // Teleport player to Boundary_Zone — handle this via a script or a second trigger zone
