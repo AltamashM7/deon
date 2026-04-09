@@ -1,8 +1,9 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro; 
 using UnityEngine.SceneManagement;
-using UnityEngine.Video; // Added for cutscene support
+using UnityEngine.Video; 
 
 public class TerminalUIManager : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class TerminalUIManager : MonoBehaviour
     [Tooltip("Drag the Hub_Cutscene VideoPlayer object here")]
     [SerializeField] private VideoPlayer warpCutscenePlayer;
 
+    [Tooltip("Drag your Cutscene_Canvas or Video_Screen GameObject here")]
+    [SerializeField] private GameObject cutsceneScreen;
+
     [Header("Player Controls")]
     [SerializeField] private MonoBehaviour[] scriptsToDisable;
 
@@ -28,6 +32,12 @@ public class TerminalUIManager : MonoBehaviour
 
     private void Start()
     {
+        // Force the video screen to hide when the Hub loads!
+        if (cutsceneScreen != null)
+        {
+            cutsceneScreen.SetActive(false);
+        }
+
         warpButton.onClick.AddListener(WarpToWorld);
         exitButton.onClick.AddListener(CloseTerminal);
         terminalContainer.SetActive(false); 
@@ -101,12 +111,9 @@ public class TerminalUIManager : MonoBehaviour
         // Play the cutscene if we have one attached
         if (warpCutscenePlayer != null)
         {
-            warpCutscenePlayer.gameObject.SetActive(true);
-            warpCutscenePlayer.enabled = true;
-            warpCutscenePlayer.loopPointReached += OnWarpCutsceneFinished;
-            
-            // Note: We use unscaledTime here in case Time.timeScale is still 0
-            warpCutscenePlayer.Play(); 
+            if (MusicManager.Instance != null) MusicManager.Instance.StopMusic();
+
+            StartCoroutine(PrepareAndPlayWarpCutscene());
         }
         else
         {
@@ -114,11 +121,47 @@ public class TerminalUIManager : MonoBehaviour
         }
     }
 
+    private IEnumerator PrepareAndPlayWarpCutscene()
+    {
+        warpCutscenePlayer.gameObject.SetActive(true);
+        warpCutscenePlayer.enabled = true;
+
+        // Pre-load the video to prevent the starting flicker
+        warpCutscenePlayer.Prepare();
+        
+        while (!warpCutscenePlayer.isPrepared)
+        {
+            yield return null; 
+        }
+
+        // --- FIX 1: Turn on the screen ONLY when the video is 100% ready! ---
+        if (cutsceneScreen != null)
+        {
+            cutsceneScreen.SetActive(true);
+        }
+        
+        warpCutscenePlayer.Play(); 
+        warpCutscenePlayer.loopPointReached += OnWarpCutsceneFinished;
+    }
+
     private void OnWarpCutsceneFinished(VideoPlayer vp)
     {
         vp.loopPointReached -= OnWarpCutsceneFinished;
         vp.enabled = false;
         vp.gameObject.SetActive(false);
+
+        // --- FIX 2: Flush the render texture from memory so it goes blank! ---
+        if (vp.targetTexture != null)
+        {
+            vp.targetTexture.Release();
+        }
+
+        // Hide the canvas again just to be perfectly clean before the scene swap
+        if (cutsceneScreen != null)
+        {
+            cutsceneScreen.SetActive(false);
+        }
+
         ExecuteWarp();
     }
 
@@ -127,7 +170,7 @@ public class TerminalUIManager : MonoBehaviour
         // 1. Unpause time
         Time.timeScale = 1f; 
 
-        // 2. RE-ENABLE THE POINTER (This is what broke your UI!)
+        // 2. RE-ENABLE THE POINTER
         SpatialPointer3D.CanUsePointer = true; 
 
         // 3. Re-lock the mouse cursor so you can look around in the new world

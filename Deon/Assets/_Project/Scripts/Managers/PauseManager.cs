@@ -18,6 +18,10 @@ public class PauseManager : MonoBehaviour
     [Tooltip("The exact name of your Main Menu scene")]
     [SerializeField] private string mainMenuSceneName = "Main_Menu";
 
+    [Header("Audio")]
+    [Tooltip("Drag your Main Menu MP3/WAV here to reset the music when quitting")]
+    [SerializeField] private AudioClip mainMenuMusic;
+
     private bool isPaused = false;
 
     private void Start()
@@ -93,7 +97,16 @@ public class PauseManager : MonoBehaviour
         // Ensure cursor is unlocked for the main menu UI
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        // --- NEW FIX: Unlock the master interaction switch before leaving! ---
+        SpatialPointer3D.CanUsePointer = true; 
         
+        // Reset the music back to the Main Menu theme!
+        if (MusicManager.Instance != null && mainMenuMusic != null)
+        {
+            MusicManager.Instance.PlayTrack(mainMenuMusic);
+        }
+
         SceneManager.LoadScene(mainMenuSceneName);
     }
 }

@@ -11,6 +11,7 @@ public class AutoHubIntro : MonoBehaviour
     // They survive scene reloads and will not reset until you quit the game!
     private static bool _hasPlayedIntro = false;
     private static bool _hasPlayedHospitalReaction = false;
+    private static bool _hasPlayedUtopiaReaction = false; // NEW: Tracks World 2
 
     private void Start()
     {
@@ -42,6 +43,19 @@ public class AutoHubIntro : MonoBehaviour
                 
                 // FORCE the reaction to play automatically!
                 dialogueRunner.StartDialogue("Hub_Child_World1_Reaction");
+                return;
+            }
+
+            // 3. NEW: Did we just get back from Utopia?
+            int utopiaScore = ChoiceEngine.Instance.GetWorldScore("world_utopia");
+
+            // If we finished Utopia (score is not 0) AND haven't seen the reaction yet
+            if (utopiaScore != 0 && !_hasPlayedUtopiaReaction)
+            {
+                _hasPlayedUtopiaReaction = true; // Mark as played forever
+                
+                // FORCE the reaction to play automatically!
+                dialogueRunner.StartDialogue("Hub_Child_World2_Reaction");
                 return;
             }
         }

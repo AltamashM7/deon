@@ -1,0 +1,182 @@
+﻿title: Hub_Intro
+---
+<<declare $seen_hub_intro = false>>
+<<declare $seen_hospital_reaction = false>>
+
+<<set $seen_hub_intro = true>>
+
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+Akane: How does it feel? Do you remember anything?
+
+<<highlight both>>
+
+-> ...
+    <<highlight right>>
+    Akane: ...
+-> Uhh.. who are you.. Where am I?
+    <<highlight right>>
+    Akane: Who I am does not matter, the only thing that matters is that you are trapped here.
+    Akane: And you better maintain your sanity and do as I say if you wish to escape.
+
+<<highlight left>>
+Ren: What is going on..?
+
+<<highlight right>>
+Akane: 2 lives.. You will be sent away and experience the burden of choice.
+Akane: And depending on how you perform.. I may be compelled to send you back.
+
+<<highlight left>>
+Ren: (Is this a dream? but this feels too real, then perhaps it would be wise to play along, because clearly this is no ordinary child.)
+Ren: Fine then, let's get on with it, what am I supposed to do?
+
+<<highlight right>>
+Akane: Ah it's simple, you just have to go through the experiences of some people.
+
+<<highlight left>>
+Ren: H-How does that even work..?
+
+<<highlight right>>
+Akane: The devices that you see besides us will allow you to do that. I must say, pretty impressive those devices are..
+
+<<highlight left>>
+Ren: Huh? But these are just computers? And pretty old ones at that.
+
+<<highlight right>>
+Akane: Hm.. You'll see soon enough.
+Akane: You may try escaping this place as well, that would be fun.
+
+<<exit_right>>
+
+<<highlight left>>
+Ren: (As if someone capable of trapping me here will not notice me escaping..)
+Ren: (Although I suppose it's worth a try.)
+
+<<exit_left>>
+===
+
+title: Hub_Child_Main
+---
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+// 1. Check if BOTH worlds are completed
+<<if get_world_score("world_hospital") != 0 and get_world_score("world_utopia") != 0>>
+    <<jump Hub_Ending>>
+
+// 2. Check if ONLY ONE world is completed
+<<elseif get_world_score("world_hospital") != 0 or get_world_score("world_utopia") != 0>>
+    Akane: It seems you have made a choice, I look forward to your future endeavors.
+
+// 3. Default state if NO worlds are completed
+<<else>>
+    Akane: Do you really have the time to idle around?
+    Akane: Don't you want to go home?
+<<endif>>
+
+<<exit_left>>
+<<exit_right>>
+===
+
+title: Hub_Child_World1_Reaction
+---
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>> 
+<<enter_right>>
+
+<<if get_world_score("world_hospital") == 1>>
+    
+    <<highlight right>>
+    Akane: I'm impressed, did you do that because you thought it won't be you dealing with the consequences?
+    Akane: Or did you do it because you genuinely thought that it was the right thing to do? I wonder..
+    
+    -> Of course because it was the right thing to do.
+        <<highlight left>>
+        Ren: Of course because it was the right thing to do, the one who was the next in line deserves to be operated on.
+        
+        <<highlight right>>
+        Akane: Even if that certain someone was a precious one instead of the Mayor..?
+        
+    -> I wonder too..
+        <<highlight left>>
+        Ren: I wonder too.. If it was somebody close to me instead of the Mayor, I doubt I would have chosen the same decision.
+        
+        <<highlight right>>
+        Akane: That is understandable. Humans are generally bound by their personal ties, and feel the need to prioritize them.
+
+<<else>>
+
+    <<highlight right>>
+    Akane: The decision that you have made was unsurprisingly a rather common one.
+    
+    -> It is only natural to choose the Mayor.
+        <<highlight left>>
+        Ren: It is only natural to choose the Mayor. The consequences are simply too lossful to ignore.
+        
+        <<highlight right>>
+        Akane: Hmm.. interesting.
+
+<<endif>>
+
+<<exit_left>>
+<<exit_right>>
+===
+
+title: Hub_Child_World2_Reaction
+---
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+<<if get_world_score("world_utopia") == -1>>
+    Akane: The answer was really simple in retrospect. Peace is a core concept of a utopia. And justice is a prerequisite for peace.
+    Akane: How can it be a utopia when the child is being treated in that manner?
+    Akane: And yet, here you are.. after having made the decision to uphold the illusion of peace in that frail world..
+<<else>>
+    Akane: The answer was really simple in retrospect. Peace is a core concept of a utopia. And justice is a prerequisite for peace.
+    Akane: How can it be a utopia when the child is being treated in that manner?
+    Akane: And here you are, after having chosen to destroy the delusion of the many. The very same delusion that justified the treatment of the child.
+<<endif>>
+
+<<exit_left>>
+<<exit_right>>
+===
+
+title: Hub_Ending
+---
+<<set_left Ren>>
+<<set_right Akane>>
+<<enter_left>>
+<<enter_right>>
+<<highlight right>>
+
+// To get the Good Ending, the player must have made the right choice (1) in BOTH worlds
+<<if get_world_score("world_hospital") == 1 and get_world_score("world_utopia") == 1>>
+    
+    Akane: Thou has done what was needed to be done and exceeded my expectations, and thou shall be rewarded as such.
+    
+<<else>>
+
+    Akane: Thou failed to do what had to be done and displayed the qualities of man that I most despise.
+    Akane: No matter what your claims may be as to who you are, it is your actions that reveal thyself.
+    Akane: And your actions were found to be unsatisfactory indeed. Banished you are!
+    Akane: For hope is what you have abandoned, and despair is what you have embraced.
+
+<<endif>>
+
+<<exit_left>>
+<<exit_right>>
+
+// This C# command calculates the final score and loads the Good or Bad ending scene!
+<<evaluate_ending>>
+===
