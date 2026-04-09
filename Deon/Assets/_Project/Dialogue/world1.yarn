@@ -19,7 +19,7 @@ Doctor: The number of patients just won't drop, what in the world is happening o
     Johan (Ren): Ah.. that seems to be the case.
     
     <<highlight right>>
-    Doctor: Hm.. We gotta do what we gotta do.
+    Doctor: Hm.. There's just no rest for us, is there?
     
 -> What exactly is happening out there?
     <<highlight left>>
@@ -33,8 +33,10 @@ Doctor: The number of patients just won't drop, what in the world is happening o
     Johan (Ren): Ah right.
 
 <<highlight right>>
-Doctor: The Senator is out there dealing with the protestors, It seems he's planning on funding our hospital, that will help the hospital in a tremendous manner! 
-Doctor: Anyways we should get ready.
+Doctor: The Mayor is out there dealing with the protestors. I seriously can't understand this.
+Doctor: Why would a crucial political figure put himself in danger like that? Plus he's funding our hospital!
+Doctor: He's the reason why our hospital has such a good reputation!
+Doctor: Anyways we should get ready. The break's almost over.
 
 <<exit_left>>
 <<exit_right>>
@@ -52,26 +54,26 @@ title: DoctorWorld_Patient
 
 Patient: It's good to see you again doctor, if only you knew how indebted I am to you.
 
--> It's good to see you again too, how are you feeling?
+-> It's good to see you too, how are you feeling?
     <<highlight left>>
-    Johan (Ren): It's good to see you again too, how are you feeling?
+    Johan (Ren): It's good to see you too, how are you feeling?
     
     <<highlight right>>
     <<set_right OldU>>
     Patient: Fine now, thanks to you, although the pain occasionally appears..
     <<set_right OldN>>
     
--> No no.. I am simply doing what is necessary.
+-> Ah.. I am simply doing what is necessary.
     <<highlight left>>
-    Johan (Ren): No no.. I am simply doing what is necessary.
+    Johan (Ren): Ah.. I am simply doing what is necessary.
     
     <<highlight right>>
     <<set_right OldU>>
-    Patient: Ever the humble doctor Johan haha..
+    Patient: Ever the humble doctor Johan, haha..
     <<set_right OldN>>
 
 <<highlight left>>
-Johan (Ren): Don't move around too much, and take care.
+Johan (Ren): Don't move around too fast, and take care.
 
 <<highlight right>>
 Patient: Yes sir.
@@ -90,7 +92,7 @@ title: World1_FinalDecision
 <<enter_right>>
 <<highlight right>>
 
-Doctor: Hurry Doctor, we have to perform a surgery on him quickly!
+Doctor: Hurry, we have to perform a surgery on him quickly!
 
 <<highlight left>>
 <<set_left RenU>>
@@ -100,21 +102,25 @@ Johan (Ren): Ye- Yes right away!
 <<highlight right>>
 Doctor (Background): Huh? How did you enter in here?!
 Doctor (Background): We are about to perform a surgery!
-Doctor (Background): What? The senator needs surgery as well?
-Doctor: Hmm.. In that case, Quick Johan, we have to save the Senator.
+Doctor (Background): What? The Mayor needs immediate attention as well?
+Doctor: Hmm.. In that case, Quick Johan, we have to save the Mayor.
 
 <<highlight left>>
 Johan (Ren): Huh? But what about the child?
 
 <<highlight right>>
-Doctor: Dont you understand? If the Senator dies, so do our funds! We MUST save him.
+Doctor: Dont you understand? If the Mayor dies, so does our reputation!
+Doctor: We can't afford to let someone as important as him die in our hospital just because of a patient queue.
+Doctor: We MUST save him.
 
--> Save the injured child
+-> Save the Child
+    <<highlight both>>
     <<record_choice "world_hospital" 1>>
     Narrator: You step towards the child...
--> Save the Senator
+-> Save the Mayor
+    <<highlight both>>
     <<record_choice "world_hospital" -1>>
-    Narrator: You step towards the Senator...
+    Narrator: You step towards the Mayor...
 
 <<exit_left>>
 <<exit_right>>

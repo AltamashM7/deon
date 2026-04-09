@@ -11341,7 +11341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
       propertyPath: spriteLibrary.Array.size
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
       propertyPath: spriteLibrary.Array.data[2].spriteName
@@ -11378,6 +11378,14 @@ PrefabInstance:
     - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
       propertyPath: spriteLibrary.Array.data[10].spriteName
       value: stranger_smiling
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
+      propertyPath: spriteLibrary.Array.data[11].spriteName
+      value: stranger_nervous
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
+      propertyPath: spriteLibrary.Array.data[12].spriteName
+      value: child
       objectReference: {fileID: 0}
     - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
       propertyPath: spriteLibrary.Array.data[1].spriteImage
@@ -11419,6 +11427,14 @@ PrefabInstance:
       propertyPath: spriteLibrary.Array.data[10].spriteImage
       value: 
       objectReference: {fileID: 21300000, guid: aa973ed0ff141774eb7b0eab168ae88d, type: 3}
+    - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
+      propertyPath: spriteLibrary.Array.data[11].spriteImage
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ad66cfd08d5e0f4c904deb525b4f045, type: 3}
+    - target: {fileID: 7827043122699148577, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
+      propertyPath: spriteLibrary.Array.data[12].spriteImage
+      value: 
+      objectReference: {fileID: 21300000, guid: a9c0d9815653f7a418f5a5f161b1ded2, type: 3}
     - target: {fileID: 8650943164031140350, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
       propertyPath: autoStart
       value: 1
@@ -11437,7 +11453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8650943164031140350, guid: f29dbeca97c295f478137c4bcdb8d80d, type: 3}
       propertyPath: runSelectedOptionAsLine
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

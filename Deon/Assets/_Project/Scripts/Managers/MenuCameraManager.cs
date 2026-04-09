@@ -1,4 +1,4 @@
-using System.Collections; // NEW: Required for Coroutines
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -31,77 +31,150 @@ public class MenuCameraManager : MonoBehaviour
     [Tooltip("Drag your Intro_Cutscene VideoPlayer object here")]
     public VideoPlayer introCutscenePlayer;
 
+    [Tooltip("Drag your Cutscene_Canvas or Video_Screen GameObject here")]
+    public GameObject cutsceneScreen;
+
+    // --- NEW: Skip Mechanics ---
+    [Header("Skip Settings")]
+    [Tooltip("Drag the UI container for the skip prompt here")]
+    public GameObject skipPromptUI;
+    [Tooltip("Optional: A UI Image set to 'Filled' to show holding progress")]
+    public Image skipProgressBar;
+    [Tooltip("How many seconds the player must hold space to skip")]
+    public float timeToSkip = 2f;
+    
+    // --- NEW: How long the prompt stays visible before hiding ---
+    [Tooltip("How many seconds the prompt stays on screen before fading out")]
+    public float promptDisplayDuration = 1f; 
+
+    private bool isIntroPlaying = false;
+    private float currentHoldTime = 0f;
+    private float promptTimer = 0f; // NEW: The internal countdown clock
+
     private void Start()
     {
+        // Force the video screen to hide when the menu loads!
+        if (cutsceneScreen != null)
+        {
+            cutsceneScreen.SetActive(false);
+        }
+
+        // Make sure the skip UI is hidden on start
+        if (skipPromptUI != null) skipPromptUI.SetActive(false);
+        if (skipProgressBar != null) skipProgressBar.fillAmount = 0f;
+
         // 1. Automatically wire up all the button clicks
         btn_Begin.onClick.AddListener(() => SetMenuState(2));
         btn_StartGame.onClick.AddListener(() => SetMenuState(3));
         btn_ExitGame.onClick.AddListener(ExitApplication);
         
-        // MODIFIED: btn_Yes now triggers the Fade Coroutine
         btn_Yes.onClick.AddListener(PlayIntroCutscene); 
         
-        btn_No.onClick.AddListener(() => SetMenuState(2)); // "No" sends them back to Ren
+        btn_No.onClick.AddListener(() => SetMenuState(2)); 
 
         // 2. Initialize the starting state (Wide Shot)
         SetMenuState(1);
     }
 
+    // --- NEW: The Skip Listener & Visibility Logic ---
+    private void Update()
+    {
+        // We only care about the spacebar if the video is actually playing
+        if (isIntroPlaying)
+        {
+            // --- NEW: The Visibility Countdown Logic ---
+            if (promptTimer > 0)
+            {
+                promptTimer -= Time.deltaTime;
+                
+                // If the timer hits zero, AND the player isn't actively holding space, hide it
+                if (promptTimer <= 0 && currentHoldTime <= 0f)
+                {
+                    if (skipPromptUI != null) skipPromptUI.SetActive(false);
+                }
+            }
+
+            if (Input.GetKey(KeyCode.Q))
+            {
+                // Force the UI to turn back on so they can see the progress bar
+                if (skipPromptUI != null) skipPromptUI.SetActive(true);
+                
+                // Keep the timer fresh so the UI doesn't instantly vanish when they let go
+                promptTimer = promptDisplayDuration; 
+
+                // Increase the timer
+                currentHoldTime += Time.deltaTime;
+
+                // Update the visual progress bar if you assigned one
+                if (skipProgressBar != null)
+                {
+                    skipProgressBar.fillAmount = currentHoldTime / timeToSkip;
+                }
+
+                // Did they hold it long enough?
+                if (currentHoldTime >= timeToSkip)
+                {
+                    ExecuteSkip();
+                }
+            }
+            else
+            {
+                // If they let go, reset the timer and the progress bar instantly
+                currentHoldTime = 0f;
+                if (skipProgressBar != null)
+                {
+                    skipProgressBar.fillAmount = 0f;
+                }
+            }
+        }
+    }
+
     // The Master State Controller
     private void SetMenuState(int stateIndex)
     {
-        // Step A: Reset all cameras to background priority (10)
         vCam_01_Wide.Priority = 10;
         vCam_02_Ren.Priority = 10;
         vCam_03_Akane.Priority = 10;
 
-        // Step B: Turn off all UI Panels
         panel_01_Begin.SetActive(false);
         panel_02_RenSelect.SetActive(false);
         panel_03_AkaneConfirm.SetActive(false);
 
-        // Step C: Elevate the requested camera to active priority (20) and show its UI
         switch (stateIndex)
         {
-            case 1: // Phase 1: Wide Shot
+            case 1: 
                 vCam_01_Wide.Priority = 20;
                 panel_01_Begin.SetActive(true);
                 break;
 
-            case 2: // Phase 2: Ren's Menu
+            case 2: 
                 vCam_02_Ren.Priority = 20;
                 panel_02_RenSelect.SetActive(true);
                 break;
 
-            case 3: // Phase 3: Akane's Confirmation
+            case 3: 
                 vCam_03_Akane.Priority = 20;
                 panel_03_AkaneConfirm.SetActive(true);
                 break;
         }
     }
 
-    // --- NEW: Fade and Cutscene Logic ---
     private void PlayIntroCutscene()
     {
-        // Disable the button instantly so the player can't double-click it during the fade
         btn_Yes.interactable = false;
-        
-        // Start the fading sequence
         StartCoroutine(FadeAndPlaySequence());
     }
 
     private IEnumerator FadeAndPlaySequence()
     {
-        // 1. Generate a black overlay purely via code
         GameObject fadeObj = new GameObject("FadeOverlay");
         Canvas canvas = fadeObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 999; // Ensure it renders on top of EVERYTHING
+        canvas.sortingOrder = 999; 
 
         Image fadeImage = fadeObj.AddComponent<Image>();
-        fadeImage.color = new Color(0f, 0f, 0f, 0f); // Start completely transparent
+        fadeImage.color = new Color(0f, 0f, 0f, 0f); 
 
-        // 2. Smoothly fade it in over 1.5 seconds
         float fadeDuration = 1.5f;
         float timer = 0f;
 
@@ -112,52 +185,112 @@ public class MenuCameraManager : MonoBehaviour
             yield return null;
         }
 
-        // Lock it to solid black
         fadeImage.color = Color.black;
-
-        // Give the player half a second to sit in the darkness
         yield return new WaitForSeconds(0.5f);
 
-        // 3. Start the cinematic!
         if (introCutscenePlayer != null)
         {
-            // Kill the Main Menu music so it doesn't overlap the cinematic
             if (MusicManager.Instance != null) 
             {
                 MusicManager.Instance.StopMusic();
             }
 
-            // Hide Akane's confirmation UI so the video is clearly visible
             panel_03_AkaneConfirm.SetActive(false);
 
-            // Destroy the black fade canvas so it doesn't block our view of the video!
+            introCutscenePlayer.gameObject.SetActive(true);
+            introCutscenePlayer.Prepare();
+            
+            while (!introCutscenePlayer.isPrepared)
+            {
+                yield return null; 
+            }
+
+            // --- FIX 1: Turn on the screen ONLY when the video is 100% ready! ---
+            if (cutsceneScreen != null)
+            {
+                cutsceneScreen.SetActive(true);
+            }
+
+            // Activate the skip logic and show the prompt!
+            isIntroPlaying = true;
+            if (skipPromptUI != null) skipPromptUI.SetActive(true);
+            
+            // Start the countdown timer the moment the video starts
+            promptTimer = promptDisplayDuration; 
+
+            introCutscenePlayer.Play();
+            
+            yield return new WaitForEndOfFrame();
+
             Destroy(fadeObj);
 
-            // Turn on the video player and listen for when it finishes
-            introCutscenePlayer.gameObject.SetActive(true);
             introCutscenePlayer.loopPointReached += OnIntroFinished;
-            
-            introCutscenePlayer.Play();
         }
         else
         {
-            // Failsafe: If no video is assigned, just load the hub instantly
             StartHubLevel();
         }
     }
 
+    // The Skip Execution
+    private void ExecuteSkip()
+    {
+        // 1. Lock the logic so it can't trigger twice
+        isIntroPlaying = false;
+
+        // 2. Stop the video and clean up the listener
+        if (introCutscenePlayer != null)
+        {
+            introCutscenePlayer.Stop();
+            introCutscenePlayer.loopPointReached -= OnIntroFinished;
+
+            // --- FIX 2: Flush the render texture from memory! ---
+            if (introCutscenePlayer.targetTexture != null)
+            {
+                introCutscenePlayer.targetTexture.Release();
+            }
+        }
+
+        // 3. Move directly to the blackout phase
+        FinishCutsceneTransition();
+    }
+
     private void OnIntroFinished(VideoPlayer vp)
     {
-        // Stop listening to prevent memory leaks
+        // Video finished naturally! Lock the skip logic.
+        isIntroPlaying = false;
         vp.loopPointReached -= OnIntroFinished;
+
+        // --- FIX 2: Flush the render texture from memory! ---
+        if (vp.targetTexture != null)
+        {
+            vp.targetTexture.Release();
+        }
         
+        FinishCutsceneTransition();
+    }
+
+    // Shared Transition Logic
+    private void FinishCutsceneTransition()
+    {
+        // Turn off the skip UI so it doesn't linger during the blackout
+        if (skipPromptUI != null) skipPromptUI.SetActive(false);
+
+        // Slam a solid black screen over the camera to prevent the ending flicker!
+        GameObject blackout = new GameObject("Blackout");
+        Canvas canvas = blackout.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 999;
+        
+        Image bg = blackout.AddComponent<Image>();
+        bg.color = Color.black;
+
         // The cinematic is over, teleport to the Hub!
         StartHubLevel();
     }
 
     private void StartHubLevel()
     {
-        // Loads your first-person Hub scene
         SceneManager.LoadScene(hubSceneName); 
     }
 

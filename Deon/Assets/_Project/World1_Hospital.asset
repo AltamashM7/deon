@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: World1_Hospital
   m_EditorClassIdentifier: Assembly-CSharp::WorldDefinition
   worldId: world_hospital
-  displayName: World 1 - Hospital
+  displayName: 3-Dimensional
   goodChoiceScore: 1
   badChoiceScore: -1
-  worldDescription: Damn this hospital kinda crazy
-  worldPreviewImage: {fileID: 21300000, guid: aa52415c25355bc469e3efaf4408a416, type: 3}
+  worldDescription: Follow the journey of Doctor Johan as he struggles to make a
+    decision when it matters the most.
+  worldPreviewImage: {fileID: 21300000, guid: 41b731bc88625414c829617fe8403d77, type: 3}
   sceneToLoad: Hospital_World

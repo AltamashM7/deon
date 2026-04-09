@@ -10,12 +10,9 @@ public class RandomDevTip : MonoBehaviour
     // You can add as many tips here as you want!
     private string[] devTips = new string[]
     {
-        "Dev Tip: We didn't build a save system. Don't close the window.",
-        "Dev Tip: Please don't try to sequence-break the cutscenes.",
-        "Dev Tip: The Hub is safe. The minigames are not.",
+        "Dev Tip: This game is meant to be played in a single seating.",
+        "Dev Tip: Wear headphones for the best experience.",
         "Dev Tip: If you clip through the floor, it's not a bug. It's a feature.",
-        "Dev Tip: We highly recommend wearing headphones. The audio team worked hard.",
-        "Dev Tip: The physics in the minigames are... sensitive. Be gentle."
     };
 
     // OnEnable runs EVERY time the GameObject this is attached to is turned on
