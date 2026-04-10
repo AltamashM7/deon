@@ -18,11 +18,14 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Worlds/World2_Utopia.unity
     guid: c86e30b2e0498074884e6eb7df023ef7
   - enabled: 1
-    path: Assets/_Project/Scenes/End/Ending_Good.unity
+    path: Assets/_Project/Scenes/End/ReturnEnd.unity
     guid: 1c41a09d3a4b6564fb9f19c0dda2bff7
   - enabled: 1
-    path: Assets/_Project/Scenes/End/Ending_Bad.unity
+    path: Assets/_Project/Scenes/End/TrappedEnd.unity
     guid: a7f79ee47421052418807c76688e0515
+  - enabled: 1
+    path: Assets/_Project/Scenes/End/CycleEnd.unity
+    guid: edbe984362d57f14e99976704358f277
   - enabled: 1
     path: Assets/_Project/Scenes/End/Credits.unity
     guid: 75aa6ae2eac90674db025a76a3d0e36f

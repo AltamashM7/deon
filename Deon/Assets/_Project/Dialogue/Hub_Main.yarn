@@ -101,14 +101,12 @@ title: Hub_Child_World1_Reaction
     -> Of course because it was the right thing to do.
         <<highlight left>>
         Ren: Of course because it was the right thing to do, the one who was the next in line deserves to be operated on.
-        
         <<highlight right>>
         Akane: Even if that certain someone was a precious one instead of the Mayor..?
-        
+
     -> I wonder too..
         <<highlight left>>
         Ren: I wonder too.. If it was somebody close to me instead of the Mayor, I doubt I would have chosen the same decision.
-        
         <<highlight right>>
         Akane: That is understandable. Humans are generally bound by their personal ties, and feel the need to prioritize them.
 
@@ -116,7 +114,7 @@ title: Hub_Child_World1_Reaction
 
     <<highlight right>>
     Akane: The decision that you have made was unsurprisingly a rather common one.
-    
+
     -> It is only natural to choose the Mayor.
         <<highlight left>>
         Ren: It is only natural to choose the Mayor. The consequences are simply too lossful to ignore.
@@ -160,11 +158,18 @@ title: Hub_Ending
 <<enter_right>>
 <<highlight right>>
 
-// To get the Good Ending, the player must have made the right choice (1) in BOTH worlds
+// SCENARIO 1: The Good Ending (Both choices were morally correct/scored 1)
 <<if get_world_score("world_hospital") == 1 and get_world_score("world_utopia") == 1>>
     
     Akane: Thou has done what was needed to be done and exceeded my expectations, and thou shall be rewarded as such.
-    
+
+// SCENARIO 2: The Neutral Ending (One choice was 1, the other was -1)
+<<elseif get_world_score("world_hospital") != get_world_score("world_utopia")>>
+
+    Akane: Thou decisions were not upto my satisfaction.
+    Akane: And so shall it be that you shall remain here.
+
+// SCENARIO 3: The Bad Ending (Both choices were morally incorrect/scored -1)
 <<else>>
 
     Akane: Thou failed to do what had to be done and displayed the qualities of man that I most despise.
@@ -177,6 +182,6 @@ title: Hub_Ending
 <<exit_left>>
 <<exit_right>>
 
-// This C# command calculates the final score and loads the Good or Bad ending scene!
+// This C# command will now need to evaluate 3 states instead of 2 and load the corresponding ending scene!
 <<evaluate_ending>>
 ===
