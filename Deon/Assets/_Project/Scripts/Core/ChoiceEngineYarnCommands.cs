@@ -13,13 +13,6 @@ public class ChoiceEngineYarnCommands : MonoBehaviour
         ChoiceEngine.Instance.RecordChoice(worldId, score);
     }
 
-    [YarnCommand("evaluate_ending")]
-    public static void EvaluateEnding()
-    {
-        if (ChoiceEngine.Instance == null) return;
-        ChoiceEngine.Instance.EvaluateAndTriggerEnding();
-    }
-
     [YarnFunction("get_world_score")]
     public static int GetWorldScore(string worldId)
     {
@@ -27,7 +20,44 @@ public class ChoiceEngineYarnCommands : MonoBehaviour
         return ChoiceEngine.Instance.GetWorldScore(worldId);
     }
 
-    // --- NEW: The Cinematic Extraction ---
+    // --- RESTORED: Static Method with Hardcoded Scene Names ---
+    [YarnCommand("evaluate_ending")]
+    public static void EvaluateEnding()
+    {
+        if (ChoiceEngine.Instance == null)
+        {
+            Debug.LogError("ChoiceEngine is missing! Cannot evaluate ending.");
+            return;
+        }
+
+        // 1. Fetch the scores from the Choice Engine
+        int hospitalScore = ChoiceEngine.Instance.GetWorldScore("world_hospital");
+        int utopiaScore = ChoiceEngine.Instance.GetWorldScore("world_utopia");
+
+        // 2. Print the math to the Console so you can verify it is working
+        Debug.Log("=== ENDING EVALUATION TRIGGERED ===");
+        Debug.Log($"Hospital Score: {hospitalScore}");
+        Debug.Log($"Utopia Score: {utopiaScore}");
+
+        // 3. Evaluate the 3 possible scenarios and load the exact hardcoded scene
+        if (hospitalScore == 1 && utopiaScore == 1)
+        {
+            Debug.Log("Result: Loading GOOD Ending -> ReturnEnd");
+            SceneManager.LoadScene("ReturnEnd");
+        }
+        else if (hospitalScore != utopiaScore)
+        {
+            Debug.Log("Result: Loading BAD Ending (Return to Hub) -> TrappedEnd");
+            SceneManager.LoadScene("TrappedEnd");
+        }
+        else
+        {
+            Debug.Log("Result: Loading WORST Ending (Banished) -> CycleEnd");
+            SceneManager.LoadScene("CycleEnd");
+        }
+    }
+
+    // --- RESTORED: Static Method with Hardcoded Hub Name ---
     [YarnCommand("extract_to_hub")]
     public static void ExtractToHub()
     {
@@ -71,7 +101,7 @@ public class ChoiceEngineYarnCommands : MonoBehaviour
         // Give the player half a second to sit in the darkness
         yield return new WaitForSeconds(0.5f);
 
-        // 3. Teleport back to the Hub!
+        // 3. Teleport back!
         SceneManager.LoadScene(sceneName);
     }
 }

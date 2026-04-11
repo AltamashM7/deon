@@ -43,13 +43,13 @@ public class MenuCameraManager : MonoBehaviour
     [Tooltip("How many seconds the player must hold space to skip")]
     public float timeToSkip = 2f;
     
-    // --- NEW: How long the prompt stays visible before hiding ---
-    [Tooltip("How many seconds the prompt stays on screen before fading out")]
-    public float promptDisplayDuration = 1f; 
+    // --- UPDATED: The initial intro window ---
+    [Tooltip("How many seconds the prompt stays on screen at the start of the cutscene")]
+    public float initialPromptDuration = 2f; 
 
     private bool isIntroPlaying = false;
     private float currentHoldTime = 0f;
-    private float promptTimer = 0f; // NEW: The internal countdown clock
+    private float promptTimer = 0f;
 
     private void Start()
     {
@@ -76,22 +76,15 @@ public class MenuCameraManager : MonoBehaviour
         SetMenuState(1);
     }
 
-    // --- NEW: The Skip Listener & Visibility Logic ---
     private void Update()
     {
         // We only care about the spacebar if the video is actually playing
         if (isIntroPlaying)
         {
-            // --- NEW: The Visibility Countdown Logic ---
+            // Tick down the initial visibility timer
             if (promptTimer > 0)
             {
                 promptTimer -= Time.deltaTime;
-                
-                // If the timer hits zero, AND the player isn't actively holding space, hide it
-                if (promptTimer <= 0 && currentHoldTime <= 0f)
-                {
-                    if (skipPromptUI != null) skipPromptUI.SetActive(false);
-                }
             }
 
             if (Input.GetKey(KeyCode.Q))
@@ -99,10 +92,7 @@ public class MenuCameraManager : MonoBehaviour
                 // Force the UI to turn back on so they can see the progress bar
                 if (skipPromptUI != null) skipPromptUI.SetActive(true);
                 
-                // Keep the timer fresh so the UI doesn't instantly vanish when they let go
-                promptTimer = promptDisplayDuration; 
-
-                // Increase the timer
+                // Increase the hold timer
                 currentHoldTime += Time.deltaTime;
 
                 // Update the visual progress bar if you assigned one
@@ -119,11 +109,23 @@ public class MenuCameraManager : MonoBehaviour
             }
             else
             {
-                // If they let go, reset the timer and the progress bar instantly
+                // If they let go, reset the progress bar instantly
                 currentHoldTime = 0f;
                 if (skipProgressBar != null)
                 {
                     skipProgressBar.fillAmount = 0f;
+                }
+
+                // --- FIX: Strict Visibility Logic ---
+                // If the initial 2-second intro window is over, hide the UI immediately.
+                if (promptTimer <= 0f)
+                {
+                    if (skipPromptUI != null) skipPromptUI.SetActive(false);
+                }
+                else
+                {
+                    // If we are still inside that initial 2-second window, keep it showing!
+                    if (skipPromptUI != null) skipPromptUI.SetActive(true);
                 }
             }
         }
@@ -205,7 +207,6 @@ public class MenuCameraManager : MonoBehaviour
                 yield return null; 
             }
 
-            // --- FIX 1: Turn on the screen ONLY when the video is 100% ready! ---
             if (cutsceneScreen != null)
             {
                 cutsceneScreen.SetActive(true);
@@ -215,8 +216,8 @@ public class MenuCameraManager : MonoBehaviour
             isIntroPlaying = true;
             if (skipPromptUI != null) skipPromptUI.SetActive(true);
             
-            // Start the countdown timer the moment the video starts
-            promptTimer = promptDisplayDuration; 
+            // Start the initial 2-second countdown timer the moment the video starts
+            promptTimer = initialPromptDuration; 
 
             introCutscenePlayer.Play();
             
@@ -244,7 +245,6 @@ public class MenuCameraManager : MonoBehaviour
             introCutscenePlayer.Stop();
             introCutscenePlayer.loopPointReached -= OnIntroFinished;
 
-            // --- FIX 2: Flush the render texture from memory! ---
             if (introCutscenePlayer.targetTexture != null)
             {
                 introCutscenePlayer.targetTexture.Release();
@@ -261,7 +261,6 @@ public class MenuCameraManager : MonoBehaviour
         isIntroPlaying = false;
         vp.loopPointReached -= OnIntroFinished;
 
-        // --- FIX 2: Flush the render texture from memory! ---
         if (vp.targetTexture != null)
         {
             vp.targetTexture.Release();
