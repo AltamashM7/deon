@@ -16,6 +16,7 @@ public class TeleportDoor2D : MonoBehaviour
     [Header("UI")]
     [Tooltip("Optional: A 'Press Z to Enter' UI prompt")]
     public GameObject interactPrompt;
+    [SerializeField] private Animator animator;
 
     private bool _playerInRange = false;
     private Transform _playerTransform;
@@ -30,8 +31,10 @@ public class TeleportDoor2D : MonoBehaviour
     {
         if (!_playerInRange) return;
 
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.E))
         {
+            animator.SetBool("IsWalkingRight", false);
+            animator.SetBool("IsWalkingLeft", false);
             TryTeleport();
         }
     }

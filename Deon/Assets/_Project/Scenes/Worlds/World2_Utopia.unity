@@ -9570,6 +9570,7 @@ MonoBehaviour:
   lockedDialogueNode: World2_DoorLocked
   dialogueRunner: {fileID: 1782058745}
   interactPrompt: {fileID: 458020845}
+  animator: {fileID: 440879701}
 --- !u!61 &478932175
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14360,6 +14361,7 @@ MonoBehaviour:
   dialogueRunner: {fileID: 1782058745}
   yarnStartNode: World2_Intro
   interactPrompt: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!61 &678286872
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36612,6 +36614,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3062029860900808336, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 440879701}
+    - target: {fileID: 3062029860900808336, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: yarnStartNode
       value: World2_Friend
       objectReference: {fileID: 0}
@@ -36628,12 +36634,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
-      propertyPath: m_fontSize
-      value: 38.1
+      propertyPath: m_text
+      value: Press E to Interact.
       objectReference: {fileID: 0}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_fontSize
+      value: 33.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fb1548797b7306d4c97204bfeb43fc1c, type: 2}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4796252994973795959, guid: fb1548797b7306d4c97204bfeb43fc1c, type: 2}
     - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4944382379045134982, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_Layer
@@ -36646,6 +36668,14 @@ PrefabInstance:
     - target: {fileID: 5623110745791819637, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254189217628983014, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254189217628983014, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100.1
       objectReference: {fileID: 0}
     - target: {fileID: 8556025689416410221, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_Layer
@@ -37066,6 +37096,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3062029860900808336, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 440879701}
+    - target: {fileID: 3062029860900808336, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: yarnStartNode
       value: World2_Stranger
       objectReference: {fileID: 0}
@@ -37082,12 +37116,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
-      propertyPath: m_fontSize
-      value: 38.1
+      propertyPath: m_text
+      value: Press E to Interact.
       objectReference: {fileID: 0}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_fontSize
+      value: 33.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fb1548797b7306d4c97204bfeb43fc1c, type: 2}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4796252994973795959, guid: fb1548797b7306d4c97204bfeb43fc1c, type: 2}
     - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836138947823690235, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4944382379045134982, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_Layer
@@ -37100,6 +37150,14 @@ PrefabInstance:
     - target: {fileID: 5623110745791819637, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254189217628983014, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 200.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6254189217628983014, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 8556025689416410221, guid: f3ebd395f9d9fee49ada7e8bef8fbf9d, type: 3}
       propertyPath: m_Layer
@@ -37726,6 +37784,7 @@ MonoBehaviour:
   dialogueRunner: {fileID: 1782058745}
   yarnStartNode: World2_FinalChoice
   interactPrompt: {fileID: 458020845}
+  animator: {fileID: 0}
 --- !u!61 &1610032004
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -38130,10 +38189,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Z to Interact.
+  m_text: Press E to Interact.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fb1548797b7306d4c97204bfeb43fc1c, type: 2}
+  m_sharedMaterial: {fileID: 4796252994973795959, guid: fb1548797b7306d4c97204bfeb43fc1c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -38157,7 +38216,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.1
+  m_fontSize: 33.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

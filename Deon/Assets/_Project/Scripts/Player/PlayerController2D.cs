@@ -13,7 +13,7 @@ public class PlayerController2D : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpForce = 0f;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -23,7 +23,7 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] private Animator animator; 
 
     [Header("Ladder")]
-    [SerializeField] private float climbSpeed = 3f;
+    [SerializeField] private float climbSpeed = 0f;
 
     // --- Private State ---
     private Rigidbody2D _rb;

@@ -22,6 +22,7 @@ public class NPCInteractionTrigger : MonoBehaviour
     [Header("Prompt UI")]
     [Tooltip("Optional: a small 'Press Z to Talk' prompt GameObject above the NPC.")]
     [SerializeField] private GameObject interactPrompt;
+    [SerializeField] private Animator animator; 
 
     // --- Private State ---
     private bool _playerInRange;
@@ -40,8 +41,8 @@ public class NPCInteractionTrigger : MonoBehaviour
     {
         if (!_playerInRange) return;
 
-        // Interaction keys: Z or A (as specified in Jira Task 2.2)
-        if (Input.GetKeyDown(KeyCode.Z))
+        // Interaction keys: E (as specified in Jira Task 2.2)
+        if (Input.GetKeyDown(KeyCode.E))
         {
             StartDialogue();
         }
